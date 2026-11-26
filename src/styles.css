@@ -1,0 +1,695 @@
+/* ===== Variables y tema ===== */
+:root {
+  --fondo: #f3f4f6;
+  --superficie: #ffffff;
+  --superficie-2: #f9fafb;
+  --texto: #111827;
+  --texto-suave: #6b7280;
+  --borde: #e5e7eb;
+  --burbuja-personaje: #f3f4f6;
+  --burbuja-user: #111827;
+  --burbuja-user-texto: #ffffff;
+  --rojo: #d6232f;
+  --azul: #1d4ed8;
+  --error-fondo: #fff7ed;
+  --error-texto: #b91c1c;
+  --color-personaje: var(--rojo);
+  color-scheme: light;
+}
+
+:root[data-tema='oscuro'] {
+  --fondo: #0b1020;
+  --superficie: #131a2e;
+  --superficie-2: #0f1526;
+  --texto: #e5e7eb;
+  --texto-suave: #9ca3af;
+  --borde: #263048;
+  --burbuja-personaje: #1c2540;
+  --burbuja-user: #d6232f;
+  --burbuja-user-texto: #ffffff;
+  --error-fondo: #2a1414;
+  --error-texto: #fca5a5;
+  color-scheme: dark;
+}
+
+/* ===== Reset minimo ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--texto);
+  background: var(--fondo);
+
+  /* layout general: nav arriba y #app ocupa el resto */
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* fallback */
+  height: 100dvh;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+/* ===== Nav ===== */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borde);
+}
+
+.nav__marca {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 1.25rem;
+}
+
+/* en mobile solo muestro el icono para que entren los links */
+.nav__marcaTexto {
+  display: none;
+}
+
+.nav__links {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.nav__link {
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem; /* 44px para que sea comodo tocarlo */
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  text-decoration: none;
+  color: var(--texto-suave);
+}
+
+.nav__link:hover,
+.nav__link--activo {
+  color: var(--texto);
+  background: var(--superficie-2);
+}
+
+.nav__link--activo {
+  font-weight: 600;
+  box-shadow: inset 0 -2px 0 var(--rojo);
+}
+
+.nav__tema {
+  width: 2.75rem;
+  height: 2.75rem;
+  flex-shrink: 0;
+  border: 1px solid var(--borde);
+  border-radius: 50%;
+  background: var(--superficie-2);
+  cursor: pointer;
+}
+
+/* ===== Contenedor de vistas ===== */
+#app {
+  flex: 1;
+  min-height: 0; /* sin esto el hijo no puede tener scroll interno */
+  overflow-y: auto;
+}
+
+body[data-ruta='chat'] #app {
+  overflow: hidden; /* en el chat scrollea solo el panel de mensajes */
+}
+
+/* ===== Botones ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid transparent;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+.btn--primary {
+  background: var(--color-personaje);
+  color: #fff;
+}
+
+.btn--secondary {
+  background: transparent;
+  border-color: var(--borde);
+  color: var(--texto);
+}
+
+.btn:hover {
+  filter: brightness(1.08);
+}
+
+/* ===== Avatar (emoji en un circulo) ===== */
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--color-personaje);
+  font-size: 1.25rem;
+}
+
+.avatar--grande {
+  width: 4.5rem;
+  height: 4.5rem;
+  font-size: 2.25rem;
+}
+
+.avatar--xl {
+  width: 6rem;
+  height: 6rem;
+  font-size: 3rem;
+}
+
+/* ===== Home ===== */
+.home {
+  padding: 2rem 1rem;
+}
+
+.home__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+}
+
+.home__franquicia {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-personaje);
+}
+
+.home__titulo {
+  font-size: 1.75rem;
+  line-height: 1.2;
+}
+
+.home__frase {
+  font-style: italic;
+  color: var(--texto-suave);
+}
+
+.home__acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* ===== Galeria de personajes ===== */
+.galeria {
+  padding: 1.5rem 1rem;
+}
+
+.galeria__titulo {
+  font-size: 1.5rem;
+}
+
+.galeria__sub {
+  color: var(--texto-suave);
+  margin-bottom: 1.25rem;
+}
+
+.galeria__grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  text-align: center;
+  background: var(--superficie);
+  border: 1px solid var(--borde);
+  border-top: 4px solid var(--color-personaje);
+  border-radius: 1rem;
+}
+
+.tarjeta__nombre {
+  font-size: 1.25rem;
+}
+
+.tarjeta__real {
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+}
+
+.tarjeta__descripcion {
+  flex: 1;
+}
+
+/* ===== About ===== */
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem 1rem;
+}
+
+.about h1 {
+  font-size: 1.5rem;
+}
+
+.about h2 {
+  font-size: 1.125rem;
+  margin-top: 0.75rem;
+}
+
+.about ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.about__autor {
+  margin-top: 1rem;
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+}
+
+/* ===== Chat ===== */
+.chatApp {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--superficie-2);
+}
+
+.chatHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--borde);
+}
+
+.chatHeader__info {
+  flex: 1;
+  min-width: 0;
+}
+
+.chatTitle {
+  font-size: 1.125rem;
+}
+
+.chatSubtitle {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--texto-suave);
+}
+
+.guardado {
+  color: #15803d;
+}
+
+:root[data-tema='oscuro'] .guardado {
+  color: #4ade80;
+}
+
+.btnBorrar {
+  min-height: 2.75rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.75rem;
+  background: transparent;
+  color: var(--texto);
+  cursor: pointer;
+}
+
+/* en mobile solo el icono */
+.btnBorrar span {
+  display: none;
+}
+
+.btnBorrar:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.chatMessages {
+  flex: 1; /* toma el espacio entre header y composer */
+  overflow-y: auto; /* scroll interno */
+  overscroll-behavior-y: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.message {
+  max-width: 85%;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  border: 1px solid transparent;
+  overflow-wrap: anywhere; /* para links o palabras muy largas */
+}
+
+.message--character {
+  align-self: flex-start;
+  background: var(--burbuja-personaje);
+  border-color: var(--borde);
+  border-bottom-left-radius: 0.25rem;
+}
+
+.message--user {
+  align-self: flex-end;
+  background: var(--burbuja-user);
+  color: var(--burbuja-user-texto);
+  border-bottom-right-radius: 0.25rem;
+}
+
+.message__text {
+  white-space: pre-wrap;
+}
+
+.message__meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.btnCopiar {
+  min-height: 2rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.5rem;
+  background: transparent;
+  color: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+/* "escribiendo..." animado */
+.typing {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--texto-suave);
+  font-size: 0.875rem;
+}
+
+.typing__dots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.typing__dots span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--texto-suave);
+  animation: rebote 1.2s infinite ease-in-out;
+}
+
+.typing__dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.typing__dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes rebote {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-0.3rem);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typing__dots span {
+    animation: none;
+  }
+}
+
+/* composer */
+.chatComposer {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: var(--superficie);
+  border-top: 1px solid var(--borde);
+}
+
+.chatInput {
+  flex: 1;
+  min-width: 0; /* evita overflow en flex */
+  min-height: 2.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--borde);
+  border-radius: 0.75rem;
+  background: var(--superficie-2);
+  color: var(--texto);
+  font-size: 1rem; /* 16px asi iOS no hace zoom */
+}
+
+.chatInput:focus {
+  outline: 2px solid var(--color-personaje);
+  outline-offset: 1px;
+}
+
+.chatSend {
+  min-height: 2.75rem;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-radius: 0.75rem;
+  background: var(--color-personaje);
+  color: #fff;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.chatInput:disabled,
+.chatSend:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== Estados (vacio / error) ===== */
+.state {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.stateContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 25rem;
+}
+
+.state--empty h2 {
+  color: var(--texto);
+  font-size: 1.25rem;
+}
+
+.state--empty p {
+  color: var(--texto-suave);
+}
+
+.state--error {
+  flex: none;
+  padding: 1rem;
+  background: var(--error-fondo);
+  border: 1px solid var(--error-texto);
+  border-radius: 1rem;
+}
+
+.state--error h2,
+.state--error h1 {
+  color: var(--error-texto);
+  font-size: 1.125rem;
+}
+
+.stateRetry {
+  min-height: 2.75rem;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--error-texto);
+  border-radius: 0.75rem;
+  background: transparent;
+  color: var(--error-texto);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.noEncontrado {
+  margin: 2rem 1rem;
+}
+
+.noEncontrado h1 {
+  font-size: 3rem;
+}
+
+/* ===== Tablet (768px+) ===== */
+@media (min-width: 768px) {
+  .nav {
+    padding: 0.5rem 1.5rem;
+  }
+
+  .nav__marcaTexto {
+    display: inline;
+  }
+
+  .nav__links {
+    gap: 0.5rem;
+  }
+
+  .nav__link {
+    padding: 0 0.875rem;
+    font-size: 1rem;
+  }
+
+  .home {
+    padding: 3rem 2rem;
+  }
+
+  .home__titulo {
+    font-size: 2.5rem;
+  }
+
+  .home__descripcion {
+    max-width: 36rem;
+  }
+
+  .home__acciones {
+    flex-direction: row;
+    justify-content: center;
+    width: auto;
+  }
+
+  .galeria,
+  .about {
+    padding: 2rem;
+  }
+
+  .galeria__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chatHeader {
+    padding: 1rem 1.5rem;
+  }
+
+  .btnBorrar span {
+    display: inline;
+  }
+
+  .chatMessages {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+
+  .chatComposer {
+    padding: 1rem 1.5rem;
+  }
+
+  .message {
+    max-width: 75%;
+  }
+}
+
+/* ===== Desktop (1024px+) ===== */
+@media (min-width: 1024px) {
+  .home__hero,
+  .galeria,
+  .about {
+    max-width: 64rem;
+    margin: 0 auto;
+  }
+
+  .about {
+    max-width: 48rem;
+  }
+
+  .galeria__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .chatApp {
+    max-width: 64rem;
+    margin: 0 auto;
+    border-left: 1px solid var(--borde);
+    border-right: 1px solid var(--borde);
+  }
+
+  .chatHeader {
+    padding: 1.25rem 2rem;
+  }
+
+  .chatMessages {
+    padding: 2rem;
+  }
+
+  .chatComposer {
+    padding: 1.25rem 2rem;
+  }
+
+  .message {
+    max-width: 60%;
+  }
+}
