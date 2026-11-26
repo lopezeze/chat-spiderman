@@ -69,5 +69,14 @@ export function parsearRespuestaGemini(data) {
     .join('')
     .trim();
 
-  return texto || null;
+  return limpiarMarkdown(texto) || null;
+}
+
+// a veces gemini responde con markdown (*cursiva* o **negrita**) y en el chat
+// se ven los asteriscos, asi que los saco y dejo solo el texto
+export function limpiarMarkdown(texto) {
+  return texto
+    .replace(/\*\*(.+?)\*\*/g, '$1')
+    .replace(/(^|[^*\w])\*(?!\s)(.+?)(?<!\s)\*(?!\w)/g, '$1$2')
+    .replace(/__(.+?)__/g, '$1');
 }

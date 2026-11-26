@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 import handler from '../api/functions.js';
-import { armarBodyGemini, parsearRespuestaGemini, validarMensajes } from '../api/_gemini.js';
+import { armarBodyGemini, parsearRespuestaGemini, validarMensajes, limpiarMarkdown } from '../api/_gemini.js';
 
 // res "falso" parecido al de vercel para poder testear el handler
 function crearRes() {
@@ -37,6 +37,15 @@ describe('parsearRespuestaGemini', () => {
       candidates: [{ content: { parts: [{ text: 'pensando...', thought: true }, { text: 'Hola' }] } }]
     };
     expect(parsearRespuestaGemini(data)).toBe('Hola');
+  });
+
+  test('saca los asteriscos del markdown', () => {
+    const data = { candidates: [{ content: { parts: [{ text: 'Trabajo en el *Daily Bugle* con **Jameson**' }] } }] };
+    expect(parsearRespuestaGemini(data)).toBe('Trabajo en el Daily Bugle con Jameson');
+  });
+
+  test('limpiarMarkdown no toca las cuentas con asterisco', () => {
+    expect(limpiarMarkdown('2 * 3 = 6')).toBe('2 * 3 = 6');
   });
 
   test('si no hay candidates devuelve null', () => {

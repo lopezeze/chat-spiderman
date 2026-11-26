@@ -4,7 +4,7 @@ Proyecto Integrador M3 - Henry Full Stack (WebFT80)
 
 Alumno: **Ezequiel Lopez Perez**
 
-Aplicación desplegada: https://TU-APP.vercel.app
+Aplicación desplegada: https://chat-spiderman.vercel.app
 
 ## Descripción
 
@@ -150,11 +150,11 @@ Configuración usada: `temperature: 0.9` (para que el personaje sea más creativ
 npm test
 ```
 
-Hay 34 tests con **Vitest**, y el `fetch` está mockeado así no se usa la red ni la API key real:
+Hay 36 tests con **Vitest**, y el `fetch` está mockeado así no se usa la red ni la API key real:
 
 - `tests/utils.test.js`: crear mensajes, formatear la hora, validar el texto, transformar el historial al formato de la API, leer el historial de localStorage (incluso si está roto) y leer el personaje de la URL.
 - `tests/app.test.js`: el routing (`/` va a `/home`, las rutas válidas y el 404) y `enviarMensajeAPI` con fetch mockeado (respuesta ok, error del servidor, sin internet y respuesta vacía).
-- `tests/functions.test.js`: el parseo de la respuesta de Gemini, el armado del body, las validaciones y el handler (405, falta la key, personaje inválido, respuesta ok, 429 y error de Gemini). También se chequea que la key vaya en el header y no en la URL.
+- `tests/functions.test.js`: el parseo de la respuesta de Gemini (incluido sacar los asteriscos del markdown), el armado del body, las validaciones y el handler (405, falta la key, personaje inválido, respuesta ok, 429 y error de Gemini). También se chequea que la key vaya en el header y no en la URL.
 
 ## Deploy en Vercel
 
@@ -184,7 +184,9 @@ vercel --prod   # deploy a produccion
 |---|---|
 | ![Personajes tablet](docs/capturas/personajes-tablet.png) | ![About desktop](docs/capturas/about-desktop.png) |
 
-<!-- agregar captura del chat con una conversacion real despues del deploy -->
+Chat funcionando en producción (Vercel + Gemini):
+
+![Chat con Spider-Man en produccion](docs/capturas/chat-desktop.png)
 
 ## Tecnologías
 
